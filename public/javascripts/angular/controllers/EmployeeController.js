@@ -1,7 +1,7 @@
 ﻿var app = angular.module('EmployeeController', ['EmployeeService']);
 app.controller('EmployeeController', function ($scope, EmployeeFactory, $location, $rootScope) {
     $scope.name = 'Employee';
-
+    // test push!
     $scope.employee = {
         data: {
             employees: '',
