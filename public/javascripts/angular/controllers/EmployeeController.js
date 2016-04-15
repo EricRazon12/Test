@@ -2,8 +2,6 @@
 app.controller('EmployeeController', function ($scope, EmployeeFactory, $location, $rootScope) {
     $scope.name = 'Employee';
 
-   
-
     $scope.employee = {
         data: {
             employees: '',
