@@ -1,0 +1,72 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" ng-app="hrms-app">
+<head>
+    <title></title>
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+</head>
+<body ng-controller="MainController">
+    <form>
+        <h1>conversations</h1>
+        <h2></h2>
+        <ul class="convs"></ul>
+        <input type="text" />
+        <input type="submit" value="Post" />
+        <input type="hidden" id="user" />
+        <h3>Choose Recipient</h3>
+        <ul class="clients"></ul>
+    </form>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var socket = io.connect();
+
+        var user = prompt("Who are you?");
+        socket.emit('update name', user);
+
+        //$("#user").val(user);
+        $("h2").text(user);
+
+        $("form").submit(function (event) {
+            event.preventDefault();
+            var d = {
+                user: $("h2").text(),
+                message: $("input").val(),
+                recipient: $("input[name=clients]:checked").val()
+            }
+            socket.emit('from client', d);
+            $('ul.convs').append("<li>" + d.user + " - " + d.message + "</li>");
+            $("input[type=text]").val("");
+        });
+        socket.on('post data', function (data) {
+            //console.log(data);
+            $('ul.convs').append("<li>" + data.user + " - " + data.message + "</li>");
+        });
+        socket.on('update clients', function (data) {
+            console.log(data);
+            $("ul.clients li").remove();
+            $.each(data.list, function (key, value) {
+                if (value != $("h2").text() && typeof value != 'object') {
+                    $("ul.clients").append('<li><input type="radio" name="clients" value="' + key + '" /><span>' + value + '</span></li>')
+                }
+            })
+
+        });
+        //socket.on('update name', function (data) {
+        //    $("h2").text(data);
+        //});
+
+
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.8/angular.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.8/angular-route.js"></script>
+    <script type="text/javascript" src="/javascripts/angular/app.js"></script>
+    <script type="text/javascript" src="/javascripts/angular/routes/route.js"></script>
+    <script type="text/javascript" src="/javascripts/angular/controllers/MainController.js"></script>
+    <script type="text/javascript" src="/javascripts/angular/controllers/EmployeeController.js"></script>
+
+    <script type="text/javascript" src="/javascripts/angular/services/EmployeeService.js"></script>
+
+    <script type="text/javascript" src="/javascripts/jquery/misc.js"></script>
+
+</body>
+</html>

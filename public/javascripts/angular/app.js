@@ -1,0 +1,1 @@
+﻿var app = angular.module('hrms-app', ['route', 'MainController', 'EmployeeController']);
