@@ -46,9 +46,10 @@
             $.each(data.list, function (key, value) {
                 if (value != $("h2").text() && typeof value != 'object') {
                     $("ul.clients").append('<li><input type="radio" name="clients" value="' + key + '" /><span>' + value + '</span></li>')
-                }else{
-                    $("#id").value(key);
                 }
+               // else{
+               //     $("#id").value(key);
+               // }
             })
 
         });
